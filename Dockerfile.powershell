@@ -1,0 +1,38 @@
+FROM ubuntu:16.04
+
+LABEL Maintainer="Frank Ridderbusch" \
+      Date="2017-07-02" \
+      Description="A container with the lastest platform independent Powershell."
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y \
+    curl mg zsh apt-transport-https git sudo gnupg locales \
+    ca-certificates --no-install-recommends \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | \
+    tee /etc/apt/sources.list.d/microsoft.list \
+    && apt-get update \
+    && apt-get install -y powershell
+
+ARG USER
+ENV USER ${USER:-fgth}
+ENV HOME /home/$USER
+ENV ZSH_THEME tjkirch
+ENV LANG en_US.UTF-8
+
+RUN groupadd $USER \
+    && useradd -g $USER -G sudo -m $USER \
+    && git clone https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh \
+    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && echo "de_DE.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen en_US.utf8 \
+    && locale-gen de_DE.UTF-8 \
+    && /usr/sbin/update-locale LANG=en_US.UTF-8 \
+    && /usr/sbin/update-locale LANG=de_DE.UTF-8
+
+COPY zshrc $HOME/.zshrc
+
+USER $USER
+WORKDIR $HOME
+
+CMD /usr/bin/zsh
