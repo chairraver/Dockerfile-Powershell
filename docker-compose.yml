@@ -1,0 +1,39 @@
+version: '3.2'
+
+services:
+  powershell-work:
+    build:
+      context: .
+      dockerfile: Dockerfile.powershell
+    container_name: ps-work
+    image: powershell
+    volumes:
+    - /dev/pts:/dev/pts
+    - /workspace/mowgli:/home/fgth/mowgli
+    - /workspace/mowgli-build:/home/fgth/mowgli-build
+    - /workspace/mowgli-modules:/home/fgth/mowgli-modules
+    - /workspace/mowgli-modules-build:/home/fgth/mowgli-modules-build
+    - ~/workspace:/home/fgth/workspace
+    - /etc/localtime:/etc/localtime:ro
+    privileged: true
+    stdin_open: true
+    tty: true
+    user: fgth
+    dns: 10.160.64.32
+    hostname: powershell
+
+  powershell-home:
+    build:
+      context: .
+      dockerfile: Dockerfile.powershell
+    container_name: ps-home
+    image: powershell
+    volumes:
+    - /dev/pts:/dev/pts
+    - ~/workspace:/home/fgth/workspace
+    - /etc/localtime:/etc/localtime:ro
+    privileged: true
+    stdin_open: true
+    tty: true
+    user: fgth
+    hostname: powershell
