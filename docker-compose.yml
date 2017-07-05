@@ -10,9 +10,9 @@ services:
     volumes:
     - /dev/pts:/dev/pts
     - /workspace/mowgli:/home/fgth/mowgli
-    - /workspace/mowgli-build:/home/fgth/mowgli-build
-    - /workspace/mowgli-modules:/home/fgth/mowgli-modules
-    - /workspace/mowgli-modules-build:/home/fgth/mowgli-modules-build
+    - /workspace/mowgli/mowgli-build:/home/fgth/mowgli-build
+    - /workspace/mowgli/mowgli-modules:/home/fgth/mowgli-modules
+    - /workspace/mowgli/mowgli-modules-build:/home/fgth/mowgli-modules-build
     - ~/workspace:/home/fgth/workspace
     - /etc/localtime:/etc/localtime:ro
     privileged: true
