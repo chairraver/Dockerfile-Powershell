@@ -31,7 +31,11 @@ services:
     volumes:
     - /dev/pts:/dev/pts
     - ~/workspace:/home/fgth/workspace
+    - /dev/shm:/dev/shm
+    - /tmp/.X11-unix:/tmp/.X11-unix
     - /etc/localtime:/etc/localtime:ro
+    environment:
+    - DISPLAY=unix:0
     privileged: true
     stdin_open: true
     tty: true

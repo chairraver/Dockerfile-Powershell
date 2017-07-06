@@ -1,12 +1,13 @@
 FROM ubuntu:16.04
 
 LABEL Maintainer="Frank Ridderbusch" \
-      Date="2017-07-05" \
+      Date="2017-07-06" \
       Description="A container with the lastest platform independent Powershell."
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     curl mg zsh apt-transport-https git sudo gnupg locales less \
-    ca-certificates --no-install-recommends \
+    libnotify4 libnss3 libxkbfile1 libgconf-2-4 \
+    wget ca-certificates --no-install-recommends \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | \
     tee /etc/apt/sources.list.d/microsoft.list \
@@ -32,7 +33,9 @@ RUN groupadd -g $GROUPID $USER \
     && locale-gen en_US.utf8 \
     && locale-gen de_DE.UTF-8 \
     && /usr/sbin/update-locale LANG=en_US.UTF-8 \
-    && /usr/sbin/update-locale LANG=de_DE.UTF-8
+    && /usr/sbin/update-locale LANG=de_DE.UTF-8 \
+    && wget -O /tmp/code.deb "https://go.microsoft.com/fwlink/?LinkID=760868" \
+    && dpkg -i /tmp/code.deb
 
 COPY zshrc $HOME/.zshrc
 
