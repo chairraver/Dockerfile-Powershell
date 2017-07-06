@@ -5,7 +5,7 @@ LABEL Maintainer="Frank Ridderbusch" \
       Description="A container with the lastest platform independent Powershell."
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-    curl mg zsh apt-transport-https git sudo gnupg locales \
+    curl mg zsh apt-transport-https git sudo gnupg locales less \
     ca-certificates --no-install-recommends \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | \
