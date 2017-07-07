@@ -6,7 +6,10 @@ LABEL Maintainer="Frank Ridderbusch" \
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     curl mg zsh apt-transport-https git sudo gnupg locales less \
-    libnotify4 libnss3 libxkbfile1 libgconf-2-4 \
+    doxygen libnotify4 libnss3 libxkbfile1 libgconf-2-4 \
+    gcc g++ make cmake libssl-dev unzip less vim openssl maven \
+    openssh-server openssh-client gdb iproute2 net-tools tree openjdk-8-jdk \
+    wget rsync inetutils-ping libcurl4-openssl-dev \
     wget ca-certificates --no-install-recommends \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list | \
@@ -36,7 +39,7 @@ RUN groupadd -g $GROUPID $USER \
     && /usr/sbin/update-locale LANG=de_DE.UTF-8 \
     && echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list \
     && apt-get update \
-    && apt-get install -y code libgtk2.0-0
+    && apt-get install -y code libgtk2.0-0 libx11-xcb1 libxtst6 libxss1 libasound2
 
 COPY zshrc $HOME/.zshrc
 

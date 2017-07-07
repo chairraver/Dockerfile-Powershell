@@ -4,16 +4,19 @@ services:
   powershell-work:
     build:
       context: .
-      dockerfile: Dockerfile.powershell
+      dockerfile: Dockerfile.powershell-work
     container_name: ps-work
     image: powershell
     volumes:
     - /dev/pts:/dev/pts
-    - /workspace/mowgli:/home/fgth/mowgli
-    - /workspace/mowgli/mowgli-build:/home/fgth/mowgli-build
-    - /workspace/mowgli/mowgli-modules:/home/fgth/mowgli-modules
-    - /workspace/mowgli/mowgli-modules-build:/home/fgth/mowgli-modules-build
-    - ~/workspace:/home/fgth/workspace
+    - /workspace/mowgli/mowgli:/workspace/mowgli
+    - /workspace/mowgli/mowgli-build:/workspace/mowgli-build
+    - /workspace/mowgli/mowgli-modules:/workspace/mowgli-modules
+    - /workspace/mowgli/mowgli-modules-build:/workspace/mowgli-modules-build
+    - ~/workspace/windows-coverity:/home/fgth/workspace/windows-coverity
+    - /opt/coverity:/opt/coverity
+    - /dev/shm:/dev/shm
+    - /tmp/.X11-unix:/tmp/.X11-unix
     - /etc/localtime:/etc/localtime:ro
     privileged: true
     stdin_open: true
