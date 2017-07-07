@@ -41,6 +41,15 @@ RUN groupadd -g $GROUPID $USER \
     && apt-get update \
     && apt-get install -y code libgtk2.0-0 libx11-xcb1 libxtst6 libxss1 libasound2
 
+ADD https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz /tmp
+# ADD http://zlib.net/zlib-1.2.11.tar.gz /tmp
+# && tar xzf zlib-1.2.11.tar.gz && (cd zlib-1.2.11 && cmake . && make -j4 && make install) \
+ADD http://www.libarchive.org/downloads/libarchive-3.3.1.tar.gz /tmp
+RUN cd /tmp \
+    && tar xzf v0.4.0.tar.gz && (cd bats-* && ./install.sh /usr/local) \
+    && tar xvf libarchive-3.3.1.tar.gz && (cd libarchive-3.3.1 && cmake . && make -j4 && make install) \
+    && rm -rf libarchive* v0.4.0.tar.gz bats-*
+
 COPY zshrc $HOME/.zshrc
 
 USER $USER
