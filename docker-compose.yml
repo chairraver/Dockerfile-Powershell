@@ -18,6 +18,8 @@ services:
     - /dev/shm:/dev/shm
     - /tmp/.X11-unix:/tmp/.X11-unix
     - /etc/localtime:/etc/localtime:ro
+    devices:
+    - /dev/dri:/dev/dri
     privileged: true
     stdin_open: true
     tty: true

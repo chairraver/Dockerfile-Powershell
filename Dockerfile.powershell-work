@@ -1,14 +1,14 @@
 FROM ubuntu:16.04
 
 LABEL Maintainer="Frank Ridderbusch" \
-      Date="2017-07-07" \
+      Date="2017-07-17" \
       Description="A container with the lastest platform independent Powershell."
 
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     curl mg zsh apt-transport-https git sudo gnupg locales less \
     doxygen libnotify4 libnss3 libxkbfile1 libgconf-2-4 \
-    gcc g++ make cmake libssl-dev unzip less vim openssl maven \
-    openssh-server openssh-client gdb iproute2 net-tools tree openjdk-8-jdk \
+    gcc g++ make cmake libssl-dev unzip less vim openssl \
+    openssh-server openssh-client gdb iproute2 net-tools tree \
     wget rsync inetutils-ping libcurl4-openssl-dev \
     wget ca-certificates --no-install-recommends \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
@@ -29,31 +29,28 @@ ENV LANG en_US.UTF-8
 
 RUN groupadd -g $GROUPID $USER \
     && useradd -g $USER -u $USERID -G sudo -m $USER \
-    && git clone https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh \
-    && echo "%sudo   ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && echo "${USER} ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers \
     && echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && echo "de_DE.UTF-8 UTF-8" >> /etc/locale.gen \
     && locale-gen en_US.utf8 \
     && locale-gen de_DE.UTF-8 \
     && /usr/sbin/update-locale LANG=en_US.UTF-8 \
-    && /usr/sbin/update-locale LANG=de_DE.UTF-8 \
-    && echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list \
-    && apt-get update \
-    && apt-get install -y code libgtk2.0-0 libx11-xcb1 libxtst6 libxss1 libasound2
+    && /usr/sbin/update-locale LANG=de_DE.UTF-8
 
-ADD https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz /tmp
-# ADD http://zlib.net/zlib-1.2.11.tar.gz /tmp
-# && tar xzf zlib-1.2.11.tar.gz && (cd zlib-1.2.11 && cmake . && make -j4 && make install) \
-ADD http://www.libarchive.org/downloads/libarchive-3.3.1.tar.gz /tmp
-RUN cd /tmp \
-    && tar xzf v0.4.0.tar.gz && (cd bats-* && ./install.sh /usr/local) \
-    && tar xvf libarchive-3.3.1.tar.gz && (cd libarchive-3.3.1 && cmake . && make -j4 && make install) \
-    && rm -rf libarchive* v0.4.0.tar.gz bats-*
-
-COPY zshrc $HOME/.zshrc
+# ADD https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz /tmp
+# # ADD http://zlib.net/zlib-1.2.11.tar.gz /tmp
+# # && tar xzf zlib-1.2.11.tar.gz && (cd zlib-1.2.11 && cmake . && make -j4 && make install) \
+# ADD http://www.libarchive.org/downloads/libarchive-3.3.1.tar.gz /tmp
+# RUN cd /tmp \
+#     && tar xzf v0.4.0.tar.gz && (cd bats-* && ./install.sh /usr/local) \
+#     && tar xvf libarchive-3.3.1.tar.gz && (cd libarchive-3.3.1 && cmake . && make -j4 && make install) \
+#     && rm -rf libarchive* v0.4.0.tar.gz bats-*
 
 USER $USER
 WORKDIR $HOME
+
+COPY zshrc $HOME/.zshrc
+RUN git clone https://github.com/robbyrussell/oh-my-zsh.git $HOME/.oh-my-zsh
 
 CMD /usr/bin/zsh
 
